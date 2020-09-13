@@ -1,30 +1,48 @@
-import React, { FunctionComponent, useEffect } from 'react';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 import Document from './Document'
 import { useStore } from '../StoreProvider'
-import mock from '../mock';
 import './Documents.css';
 
 interface DocumentsProps {}
 
+interface IDocument {
+    id: number;
+    title: string,
+    updated_at: Date,
+    content: string
+}
+
 const Documents: FunctionComponent<DocumentsProps> = () => {
     const { state, dispatch } = useStore();
+    const [ documents, setDocuments ] = useState<IDocument[]>([]);
     useEffect(() => {
         console.log('mounted')
-        const document = mock[0]
-        dispatch({
-            type: 'SELECTED_DOCUMENT',
-            title: document.title,
-            content: document.content,
-            original: document.content,
-            selected: document.title
-        })
+        fetch('http://localhost:3001/api', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+            body: JSON.stringify({query:`{getDocuments{id title content updated_at}}`})
+        }).then(
+            r => r.json()
+        ).then(
+            ({data}) => {
+                setDocuments(data.getDocuments)
+                dispatch({
+                    type: 'SELECTED_DOCUMENT',
+                    selected: data.getDocuments[0].title,
+                    original: data.getDocuments[0].title,
+                    ...data.getDocuments[0]
+                })
+            });
     }, []);
 
 
     return (
         <div className="Documents">
             {
-                mock.map(doc => <Document
+                documents.map(doc => <Document
                     key={doc.id}
                     updated_at={doc.updated_at}
                     selected={doc.title === state.selected}
