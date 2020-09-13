@@ -1,0 +1,71 @@
+.Document {
+    padding: 1rem;
+}
+
+.Document:hover {
+    cursor: pointer;
+    background-color: #828282;
+}
+
+.Document:hover > .row > .column > .content {
+    color: white;
+}
+
+.Document:hover > .row > .column > .content > .date {
+    color: white;
+}
+
+.Document.selected {
+    background-color: #828282;
+    border: 1px solid black;
+}
+
+.Document.selected > .row > .column > .content {
+    color: white;
+}
+
+.Document.selected > .row > .column > .content > .date {
+    color: white;
+}
+
+.Document > .row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.Document > .row > .column:first-child {
+    flex:1;
+    min-height: 100%;
+}
+
+.Document > .row > .column:first-child > .image{
+    min-height: 100%;
+}
+
+.Document > .row > .column:first-child > .image > img{
+    min-height: 100%;
+}
+
+.Document > .row > .column {
+    display: flex;
+    flex: 4;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.Document > .row > .column > .content {
+    color: black;
+}
+
+.Document > .row > .column > .content > .title {
+    font-weight: 600;
+}
+
+.Document > .row > .column > .content > .date {
+    font-size: 0.8rem;
+    color: #A9A9A9;
+    font-weight: 500;
+}

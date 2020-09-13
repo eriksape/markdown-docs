@@ -1,4 +1,15 @@
 .Pane {
     border: 1px solid #BCBCBC;
     height: 100vh;
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+.Pane.hide-top-border {
+    border-top: none;
+}
+
+.Pane.hide-left-border {
+    border-left: none;
 }

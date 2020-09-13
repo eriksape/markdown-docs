@@ -1,4 +1,9 @@
 .Preview {
-    padding: 1em;
-    height: 100vh;
+    background-color: #FAFAFA;
+    padding: 1.7rem 2rem 1rem;
+    flex: 1;
+}
+
+.Preview > *:first-child {
+    margin-top: 0;
 }

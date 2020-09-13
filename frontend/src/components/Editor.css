@@ -1,6 +1,6 @@
 .Editor {
-    padding: 1em;
-    height: 100vh;
+    padding: 1.7rem 2rem 1rem;
+    flex: 1;
 }
 
 .Editor:focus {
