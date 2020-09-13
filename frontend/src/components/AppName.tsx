@@ -6,9 +6,10 @@ import {connect} from "react-redux";
 interface AppNameProps {
     addDocument(newDocument: IDocument):void
     selectDocument:(document:IDocument) => void
+    number: number
 }
 
-const AppName: FunctionComponent<AppNameProps> = ({addDocument, selectDocument}) => {
+const AppName: FunctionComponent<AppNameProps> = ({addDocument, selectDocument, number}) => {
     const onClickNew = () => {
         fetch('http://localhost:3001/api', {
             method: 'POST',
@@ -16,7 +17,7 @@ const AppName: FunctionComponent<AppNameProps> = ({addDocument, selectDocument})
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
             },
-            body: JSON.stringify({query:`{createDocument{id title content updated_at}}`})
+            body: JSON.stringify({query:`{createDocument(number:${number+1}){id title content updated_at}}`})
         }).then(
             response => response.json()
         ).then(
@@ -38,11 +39,15 @@ const AppName: FunctionComponent<AppNameProps> = ({addDocument, selectDocument})
     );
 }
 
+const mapStateToProps = (state: { documents: IDocument[]; }) => ({
+    number: state.documents.length,
+});
+
 const mapDispatchToProps = ({
     addDocument: (newDocument: IDocument) => ({type: 'ADD_DOCUMENT', ...newDocument}),
     selectDocument: (document: IDocument) => ({type: 'SELECT_DOCUMENT', document}),
 });
 
 export default connect(
-    null, mapDispatchToProps
+    mapStateToProps, mapDispatchToProps
 )(AppName);

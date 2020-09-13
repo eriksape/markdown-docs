@@ -11,7 +11,7 @@ type Document {
 
 type Query {
     "Create a document"
-    createDocument: Document
+    createDocument(number:Int): Document
     "Read all documents"
     readDocuments: [Document]
     "Read a document"

@@ -37,11 +37,11 @@ module.exports = {
         }
     }),
     Query: {
-        createDocument: async() => {
+        createDocument: async(obj, {number}) => {
             const database = new PGConnection();
             const client = await database.client.connect();
             const query = 'INSERT INTO documents(title, content) VALUES ($1, $2) RETURNING id, title, content, updated_at';
-            const values = ['new document', '# new document'];
+            const values = [`new document ${number}`, `# new document ${number}`];
             const document = await client.query(query, values);
             await client.end();
 

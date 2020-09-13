@@ -11,6 +11,8 @@ export default function(state = initialState, action:any) {
             }
         case 'SELECT_DOCUMENT':
             return action.document
+        case 'UNSELECT_DOCUMENT':
+            return initialState;
         default:
             return state;
     }

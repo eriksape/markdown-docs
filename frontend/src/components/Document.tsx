@@ -2,6 +2,7 @@ import React, {FunctionComponent, useState, useEffect, SyntheticEvent, ChangeEve
 import formatDistanceToNow from 'date-fns/formatDistanceToNow'
 import document from '../assets/document.svg'
 import './Document.css';
+import IDocument from "../interfaces/IDocument";
 
 interface DocumentProps {
     k: number
@@ -10,14 +11,15 @@ interface DocumentProps {
     updated_at: Date
     selected?: boolean
     onClick?: (e:SyntheticEvent) => void
-    setTitle: (title:string, key:number) => void,
+    setTitle: (title:string, key:number) => void
     deleteDocument: (id: number) => void
+    reSelectDocument:() => void
 }
 
 const Document: FunctionComponent<DocumentProps> = ({
                                                         k, id, title, updated_at,
                                                         selected, onClick, setTitle,
-                                                        deleteDocument
+                                                        deleteDocument, reSelectDocument
 }) => {
     const [changeTitle, setChangeTitle] = useState(false);
     const [newTitle, setNewTitle] = useState(title);
@@ -68,7 +70,7 @@ const Document: FunctionComponent<DocumentProps> = ({
         ).then(
             ({data}) => {
                 deleteDocument(id);
-                console.log(data)
+                reSelectDocument();
             }
         );
     }

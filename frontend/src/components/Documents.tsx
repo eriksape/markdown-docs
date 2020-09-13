@@ -13,11 +13,13 @@ interface DocumentsProps {
     setTitle: (title:string, key:number) => void
     deleteDocument: (id: number) => void
     updateContent:(id: number, content: string) => void
+    unselectDocument:() => void
 }
 
 const Documents: FunctionComponent<DocumentsProps> = ({
-                                                          content, document, documents, loadDocuments,
-                                                          selectDocument, setTitle, deleteDocument, updateContent}) => {
+                                                          content, document, documents,
+                                                          loadDocuments, selectDocument, setTitle,
+                                                          deleteDocument, updateContent, unselectDocument}) => {
     const [onLoad, setLoad] = useState(true)
     useEffect(() => {
         fetch('http://localhost:3001/api', {
@@ -53,6 +55,10 @@ const Documents: FunctionComponent<DocumentsProps> = ({
                     } }
                     setTitle={setTitle}
                     deleteDocument={deleteDocument}
+                    reSelectDocument={()=>{
+                        if(documents.length > 1) selectDocument(documents[0]);
+                        else unselectDocument();
+                    }}
                 />)
             }
         </div>
@@ -71,6 +77,7 @@ const mapDispatchToProps = ({
     setTitle: (title: string, key:number) => ({type: 'SET_TITLE', title, key}),
     deleteDocument: (id: number) => ({type: 'DELETE_DOCUMENT', id}),
     updateContent: (id: number, content: string) => ({type: 'UPDATE_CONTENT', id, content}),
+    unselectDocument: () => ({type: 'UNSELECT_DOCUMENT'})
 });
 
 export default connect(
