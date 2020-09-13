@@ -1,0 +1,13 @@
+version: "3.8"
+services: 
+    frontend:
+        image: node:14.9-alpine
+        volumes: 
+            - ./frontend:/var/www/frontend
+        working_dir: /var/www/frontend
+        command: /bin/sh -c "yarn install && yarn start"
+        stdin_open: true
+        tty: true
+        ports:
+            - 3000:3000
+            - 35729:35729
