@@ -1,40 +1,38 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
+import { connect } from "react-redux";
 import Document from './Document'
-import { useStore } from '../StoreProvider'
 import './Documents.css';
+import IDocument from "../interfaces/IDocument";
 
-interface DocumentsProps {}
-
-interface IDocument {
-    id: number;
-    title: string,
-    updated_at: Date,
+interface DocumentsProps {
     content: string
+    document: IDocument
+    documents: IDocument[]
+    loadDocuments:(documents:IDocument[]) => void
+    selectDocument:(document:IDocument) => void
+    setTitle: (title:string, key:number) => void
+    deleteDocument: (id: number) => void
+    updateContent:(id: number, content: string) => void
 }
 
-const Documents: FunctionComponent<DocumentsProps> = () => {
-    const { state, dispatch } = useStore();
-    const [ documents, setDocuments ] = useState<IDocument[]>([]);
+const Documents: FunctionComponent<DocumentsProps> = ({
+                                                          content, document, documents, loadDocuments,
+                                                          selectDocument, setTitle, deleteDocument, updateContent}) => {
+    const [onLoad, setLoad] = useState(true)
     useEffect(() => {
-        console.log('mounted')
         fetch('http://localhost:3001/api', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
             },
-            body: JSON.stringify({query:`{getDocuments{id title content updated_at}}`})
+            body: JSON.stringify({query:`{readDocuments{id title content updated_at}}`})
         }).then(
-            r => r.json()
+            response => response.json()
         ).then(
             ({data}) => {
-                setDocuments(data.getDocuments)
-                dispatch({
-                    type: 'SELECTED_DOCUMENT',
-                    selected: data.getDocuments[0].title,
-                    original: data.getDocuments[0].title,
-                    ...data.getDocuments[0]
-                })
+                loadDocuments(data.readDocuments)
+                if(data.readDocuments.length > 0) selectDocument(data.readDocuments[0])
             });
     }, []);
 
@@ -42,22 +40,39 @@ const Documents: FunctionComponent<DocumentsProps> = () => {
     return (
         <div className="Documents">
             {
-                documents.map(doc => <Document
+                documents.map((doc, key) => <Document
                     key={doc.id}
+                    id={doc.id}
+                    k={key}
                     updated_at={doc.updated_at}
-                    selected={doc.title === state.selected}
+                    selected={document && document.id === doc.id}
                     title={doc.title}
-                    onClick={ () => { dispatch({
-                        type: 'SELECTED_DOCUMENT',
-                        title: doc.title,
-                        content: doc.content,
-                        original: doc.content,
-                        selected: doc.title
-                    }) }}
+                    onClick={ () => {
+                        updateContent(document.id, content)
+                        selectDocument(doc)
+                    } }
+                    setTitle={setTitle}
+                    deleteDocument={deleteDocument}
                 />)
             }
         </div>
   )
 };
 
-export default Documents;
+const mapStateToProps = (state: { documents: IDocument[]; document: IDocument; content: string}) => ({
+    documents: state.documents,
+    document: state.document,
+    content: state.content
+});
+
+const mapDispatchToProps = ({
+    loadDocuments: (documents: IDocument[]) => ({type: 'LOAD_DOCUMENTS', documents}),
+    selectDocument: (document: IDocument) => ({type: 'SELECT_DOCUMENT', document}),
+    setTitle: (title: string, key:number) => ({type: 'SET_TITLE', title, key}),
+    deleteDocument: (id: number) => ({type: 'DELETE_DOCUMENT', id}),
+    updateContent: (id: number, content: string) => ({type: 'UPDATE_CONTENT', id, content}),
+});
+
+export default connect(
+    mapStateToProps, mapDispatchToProps
+)(Documents);

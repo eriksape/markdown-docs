@@ -1,6 +1,7 @@
 import React from 'react';
+import { Provider } from "react-redux";
+import store from "./store";
 import './App.css';
-import {StoreProvider} from "./StoreProvider";
 import Pane from "./components/Pane";
 import AppName from "./components/AppName";
 import Documents from "./components/Documents";
@@ -9,16 +10,16 @@ import Preview from "./components/Preview";
 
 function App() {
   return (
-    <StoreProvider>
-      <div className="App">
-        <Pane hideTopBorder={true} hideLeftBorder={true}>
-          <AppName />
-          <Documents />
-        </Pane>
-        <Pane><EditorContainer /></Pane>
-        <Pane><Preview /></Pane>
-      </div>
-    </StoreProvider>
+      <Provider store={store}>
+          <div className="App">
+              <Pane hideTopBorder={true} hideLeftBorder={true}>
+                <AppName />
+                <Documents />
+              </Pane>
+              <Pane><EditorContainer /></Pane>
+              <Pane><Preview /></Pane>
+          </div>
+    </Provider>
   );
 }
 
