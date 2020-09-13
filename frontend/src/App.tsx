@@ -11,7 +11,7 @@ function App() {
   return (
     <StoreProvider>
       <div className="App">
-        <Pane>
+        <Pane hideTopBorder={true} hideLeftBorder={true}>
           <AppName />
           <Documents />
         </Pane>

@@ -5,9 +5,9 @@ import './Preview.css'
 
 interface PreviewProps {}
 
-const Preview: FunctionComponent<PreviewProps> = ({}) => {
+const Preview: FunctionComponent<PreviewProps> = () => {
   const { state } = useStore();
-  return <div className="Preview" dangerouslySetInnerHTML={{__html:Marked.parse(state.text)}}/>;
+  return <div className="Preview" dangerouslySetInnerHTML={{__html:Marked.parse(state.content)}}/>;
 }
 
 export default Preview;

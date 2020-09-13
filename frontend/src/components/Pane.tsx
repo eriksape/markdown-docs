@@ -1,10 +1,13 @@
 import React, { FunctionComponent } from 'react';
 import './Pane.css'
 
-type PaneProps = {}
+type PaneProps = {
+    hideTopBorder?: boolean,
+    hideLeftBorder?: boolean
+}
 
-const Pane: FunctionComponent<PaneProps> = ({children}) => (
-    <div className="Pane">
+const Pane: FunctionComponent<PaneProps> = ({children, hideTopBorder, hideLeftBorder}) => (
+    <div className={`Pane ${(hideTopBorder?'hide-top-border':'')} ${(hideLeftBorder?'hide-left-border':'')}`}>
         { children }
     </div>
 )

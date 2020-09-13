@@ -1,35 +1,46 @@
 import React, { createContext, useReducer, useContext, FunctionComponent } from "react";
 
 const defaultState = {
-  document: 'title 1',
-  text: '# Hello world!',
-  original: '# Hello world!'
+  title: '',
+  content: '',
+  original: '',
+  selected: ''
 };
 
 const defaultAction = {
   type: '',
-  document: '',
-  text: '',
-  original: ''
+  title: '',
+  content: '',
+  original: '',
+  selected: ''
 }
 
 interface StateType {
-  text: string,
-  document: string,
-  original: string
+  content: string,
+  title: string,
+  original: string,
+  selected: string
 }
 
 interface ActionType {
   type: string,
-  text: string,
-  document: string,
-  original: string
+  content: string,
+  title: string,
+  original: string,
+  selected: string
 }
 
 function reducer(state: StateType = defaultState, action: ActionType = defaultAction):StateType {
   switch (action.type) {
-    case "TEXT_CHANGED":
-      return { ...state, text: action.text };
+    case 'SELECTED_DOCUMENT':
+      return {
+        title: action.title,
+        content: action.content,
+        original: action.original,
+        selected: action.selected,
+      }
+    case 'CONTENT_CHANGED':
+      return { ...state, content: action.content };
     default:
       return state;
   }
@@ -37,7 +48,20 @@ function reducer(state: StateType = defaultState, action: ActionType = defaultAc
 
 interface IContextProps {
   state: StateType;
-  dispatch: ({type, document, text, original}:{type:string, document?:string, text?:string, original?:string}) => void;
+  dispatch: (
+      {
+        type,
+        title,
+        content,
+        original,
+        selected
+      } : {
+        type: string,
+        title?: string,
+        content?: string,
+        original?: string,
+        selected?: string,
+      }) => void;
 }
 
 const StoreContext = createContext({} as IContextProps);

@@ -4,13 +4,13 @@ import { useStore  } from '../StoreProvider'
 
 interface EditorContainerProps {}
 
-const EditorContainer: FunctionComponent<EditorContainerProps> = ({}) => {
+const EditorContainer: FunctionComponent<EditorContainerProps> = () => {
     const { state, dispatch } = useStore();
 
     const onChange = (text: string) => {
         dispatch({
-            type: 'TEXT_CHANGED',
-            text: text
+            type: 'CONTENT_CHANGED',
+            content: text
         })
     }
 
