@@ -1,4 +1,5 @@
 scalar Date
+scalar Void
 
 type Document {
     id: ID!
@@ -9,6 +10,12 @@ type Document {
 }
 
 type Query {
-    "get all documents"
-    getDocuments: [Document]
+    "Create a document"
+    createDocument(title:String!, content:String!): Document
+    "Read all documents"
+    readDocuments: [Document]
+    "Update a document by id"
+    updateDocument(id:ID!, title:String!, content:String!): Document
+    "Delete a document by id"
+    deleteDocument(id: ID!): Void
 }

@@ -1,6 +1,6 @@
 const { makeExecutableSchema } = require('graphql-tools')
 const express = require('express')
-var cors = require('cors')
+const cors = require('cors')
 const { graphqlHTTP } = require('express-graphql')
 const { readFileSync } = require('fs')
 const { join } = require('path')
@@ -10,7 +10,6 @@ const app = express()
 app.use(cors())
 const port = process.env.port || 3000
 
-// definiendo el esquema
 const typeDefs = readFileSync(
     join(__dirname, 'lib', 'schema.graphql'),
     'utf-8'
