@@ -4,4 +4,16 @@
     margin: 0;
     padding: 1rem 2rem;
     font-weight: bold;
+    display: flex;
+}
+
+.AppName > .column:first-child {
+    flex: 1
+}
+
+.AppName > .column:last-child {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    cursor: pointer;
 }

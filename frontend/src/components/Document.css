@@ -21,7 +21,7 @@
 }
 
 .Document.selected > .row > .column > .content {
-    color: white;
+    color: #ffffff;
 }
 
 .Document.selected > .row > .column > .content > .date {
@@ -38,6 +38,10 @@
 .Document > .row > .column:first-child {
     flex:1;
     min-height: 100%;
+}
+
+.Document > .row > .column:last-child {
+    flex:0.2;
 }
 
 .Document > .row > .column:first-child > .image{
