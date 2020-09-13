@@ -10,4 +10,13 @@ services:
         tty: true
         ports:
             - 3000:3000
-            - 35729:35729
+            - 35729:35729    backend:
+        image: node:14.9-alpine
+        volumes:
+            - ./backend:/var/www/backend
+        working_dir: /var/www/backend
+        command: /bin/sh -c "npm install && npm run dev"
+        stdin_open: true
+        tty: true
+        ports:
+            - 3001:3000

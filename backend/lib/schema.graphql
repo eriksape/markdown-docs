@@ -1,0 +1,14 @@
+scalar Date
+
+type Document {
+    id: ID!
+    title: String!
+    content: String
+    created_at: Date
+    updated_at: Date
+}
+
+type Query {
+    "get all documents"
+    getDocuments: [Document]
+}
