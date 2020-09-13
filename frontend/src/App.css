@@ -1,0 +1,4 @@
+.App {
+  display: grid;
+  grid-template-columns: 24% 38% 38%;
+}
