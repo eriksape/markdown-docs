@@ -16,6 +16,6 @@ jobs:
       - name: Initialize docker
         run: docker-compose up -d backend database
       - name: Build database
-        run: docker-compose run backend npm migrate up
+        run: docker-compose run backend npm run migrate up
       - name: Run GraphQL tests
         run: docker-compose backend database -d && sleep 5 && docker-compose run backend npm run test
