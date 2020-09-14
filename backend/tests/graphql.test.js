@@ -5,7 +5,7 @@ const url = `http://backend:3000`;
 const request = require('supertest')(url);
 
 describe('GraphQL', () => {
-    it('create a new document', (done) => {
+    it('Create a new document', (done) => {
         request.post('/api')
             .send({ query: '{ createDocument(number:1) { id title content updated_at } }'})
             .expect(200)
@@ -19,7 +19,7 @@ describe('GraphQL', () => {
             })
     });
 
-    it('Returns all documents', (done) => {
+    it('Read all documents', (done) => {
         request.post('/api')
             .send({ query: '{ readDocuments { id } }' })
             .expect(200)
@@ -30,7 +30,7 @@ describe('GraphQL', () => {
             });
     });
 
-    it('read a document', (done) => {
+    it('Read a document', (done) => {
         request.post('/api')
             .send({ query: '{ readDocument(id:1) { id, title } }' })
             .expect(200)
@@ -43,7 +43,7 @@ describe('GraphQL', () => {
             });
     });
 
-    it('update a document', (done) => {
+    it('Update a document', (done) => {
         request.post('/api')
             .send({ query: '{ updateDocument(id:1 title:"hello test") { id, title } }' })
             .expect(200)
@@ -56,7 +56,7 @@ describe('GraphQL', () => {
             });
     });
 
-    it('delete a doccument', (done) => {
+    it('Delete a doccument', (done) => {
         request.post('/api')
             .send({ query: '{ deleteDocument(id:1) }' })
             .expect(200)
