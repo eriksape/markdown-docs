@@ -14,6 +14,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Initialize docker
-        run: docker-compose up backend database
+        run: docker-compose backend database -d
+      - name: Build database
+        run: docker-compose run backend npm migrate up
       - name: Run GraphQL tests
-        run: docker-compose run backend npm run test
+        run: docker-compose backend database -d && sleep 5 && docker-compose run backend npm run test
