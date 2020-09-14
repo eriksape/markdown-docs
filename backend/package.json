@@ -6,7 +6,8 @@
   "scripts": {
     "test": "mocha tests/*.test.js",
     "dev": "nodemon --ignore tests/ ./index.js",
-    "migrate": "node-pg-migrate"
+    "migrate": "node-pg-migrate",
+    "start": "node index.js"
   },
   "author": "eriksape",
   "license": "MIT",

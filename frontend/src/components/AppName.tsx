@@ -11,7 +11,7 @@ interface AppNameProps {
 
 const AppName: FunctionComponent<AppNameProps> = ({addDocument, selectDocument, number}) => {
     const onClickNew = () => {
-        fetch('http://localhost:3001/api', {
+        fetch(`${process.env.REACT_APP_BACKEND_URL}/api`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

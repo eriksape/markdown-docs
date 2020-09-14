@@ -22,7 +22,7 @@ const Documents: FunctionComponent<DocumentsProps> = ({
                                                           deleteDocument, updateContent, unselectDocument}) => {
     const [onLoad, setLoad] = useState(true)
     useEffect(() => {
-        fetch('http://localhost:3001/api', {
+        fetch(`${process.env.REACT_APP_BACKEND_URL}/api`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

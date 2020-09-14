@@ -40,7 +40,7 @@ const Document: FunctionComponent<DocumentProps> = ({
             setTitle(newTitle, k)
             setChangeTitle(false);
 
-            fetch('http://localhost:3001/api', {
+            fetch(`${process.env.REACT_APP_BACKEND_URL}/api`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -58,7 +58,7 @@ const Document: FunctionComponent<DocumentProps> = ({
     }
 
     const onDelete = () => {
-        fetch('http://localhost:3001/api', {
+        fetch(`${process.env.REACT_APP_BACKEND_URL}/api`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

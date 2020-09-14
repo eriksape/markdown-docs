@@ -20,7 +20,7 @@ const EditorContainer: FunctionComponent<EditorContainerProps> = ({document, con
                 const encodeContent = encodeURI(content.replace(/\n\n\n/mg, '\n\n'));
 
                 if(document) {
-                    fetch('http://localhost:3001/api', {
+                    fetch(`${process.env.REACT_APP_BACKEND_URL}/api`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
