@@ -2,7 +2,6 @@ import React, {FunctionComponent, useState, useEffect, SyntheticEvent, ChangeEve
 import formatDistanceToNow from 'date-fns/formatDistanceToNow'
 import document from '../assets/document.svg'
 import './Document.css';
-import IDocument from "../interfaces/IDocument";
 
 interface DocumentProps {
     k: number

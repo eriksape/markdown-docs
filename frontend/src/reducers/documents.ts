@@ -13,7 +13,7 @@ export default function(state = initialState, action:any) {
             });
             return state;
         case 'DELETE_DOCUMENT':
-            return state.filter(doc => doc.id != action.id)
+            return state.filter(doc => doc.id !== action.id)
         case 'SET_TITLE':
             state[action.key].title = action.title;
             return state;

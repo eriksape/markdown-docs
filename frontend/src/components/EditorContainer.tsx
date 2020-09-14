@@ -14,7 +14,7 @@ const EditorContainer: FunctionComponent<EditorContainerProps> = ({document, con
     useEffect(() => {
         console.log(content)
         const timer = setTimeout(() => {
-            if (lastText != content) {
+            if (lastText !== content) {
                 setLastText(content);
 
                 const encodeContent = encodeURI(content.replace(/\n\n\n/mg, '\n\n'));
@@ -40,7 +40,7 @@ const EditorContainer: FunctionComponent<EditorContainerProps> = ({document, con
             }
         }, 1000);
         return () => clearTimeout(timer)
-    }, [content]);
+    }, [content, lastText, document]);
 
     if(document === null) return null;
     return <Editor

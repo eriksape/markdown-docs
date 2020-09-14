@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import React, { FunctionComponent, useEffect } from 'react';
 import { connect } from "react-redux";
 import Document from './Document'
 import './Documents.css';
@@ -20,7 +20,6 @@ const Documents: FunctionComponent<DocumentsProps> = ({
                                                           content, document, documents,
                                                           loadDocuments, selectDocument, setTitle,
                                                           deleteDocument, updateContent, unselectDocument}) => {
-    const [onLoad, setLoad] = useState(true)
     useEffect(() => {
         fetch(`${process.env.REACT_APP_BACKEND_URL}/api`, {
             method: 'POST',
@@ -36,7 +35,7 @@ const Documents: FunctionComponent<DocumentsProps> = ({
                 loadDocuments(data.readDocuments)
                 if(data.readDocuments.length > 0) selectDocument(data.readDocuments[0])
             });
-    }, []);
+    }, [loadDocuments, selectDocument]);
 
 
     return (

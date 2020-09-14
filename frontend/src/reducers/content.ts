@@ -1,5 +1,3 @@
-import IDocument from "../interfaces/IDocument";
-
 const initialState:string = '';
 
 export default function(state = initialState, action:any) {
