@@ -5,7 +5,7 @@ import './App.css';
 import Pane from "./components/Pane";
 import AppName from "./containers/AppName";
 import Documents from "./containers/Documents";
-import EditorContainer from "./components/EditorContainer";
+import EditorContainer from "./containers/EditorContainer";
 import Preview from "./components/Preview";
 
 function App() {

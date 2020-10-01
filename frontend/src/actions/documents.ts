@@ -70,3 +70,16 @@ export const addDocument = (sequence:number) => async(dispatch:Function) => {
     dispatch({type: 'SELECT_DOCUMENT', document})
 }
 
+export const changeContent = (content:string) => ({type: 'CHANGE_CONTENT', content});
+
+export const saveContent = (document: IDocument, content:string) => async(dispatch:Function) => {
+    await fetch(`${process.env.REACT_APP_BACKEND_URL}/api`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+        },
+        body: JSON.stringify({query: `{updateDocument(id:${document.id} content:"${content}"){id title content updated_at}}`})
+    });
+    dispatch({type: 'NONE'});
+}

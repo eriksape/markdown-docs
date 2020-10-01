@@ -1,5 +1,4 @@
 import React, {FunctionComponent, useEffect, useState} from 'react';
-import { connect } from "react-redux";
 import Editor from './Editor'
 import IDocument from "../interfaces/IDocument";
 
@@ -7,40 +6,21 @@ interface EditorContainerProps {
     document: IDocument
     content: string
     changeContent:(content:string) => void
+    saveContent:(document: IDocument, content:string) => void
 }
 
-const EditorContainer: FunctionComponent<EditorContainerProps> = ({document, content, changeContent}) => {
-    const [lastText, setLastText] = useState('');
+const EditorContainer: FunctionComponent<EditorContainerProps> = ({document, content, changeContent, saveContent}) => {
+    const [lastText, setLastText] = useState(content);
     useEffect(() => {
-        console.log(content)
         const timer = setTimeout(() => {
-            if (lastText !== content) {
+            if (document && lastText !== content) {
                 setLastText(content);
-
                 const encodeContent = encodeURI(content.replace(/\n\n\n/mg, '\n\n'));
-
-                if(document) {
-                    fetch(`${process.env.REACT_APP_BACKEND_URL}/api`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json',
-                        },
-                        body: JSON.stringify({query: `{updateDocument(id:${document.id} content:"${encodeContent}"){id title content updated_at}}`})
-                    }).then(
-                        response => response.json()
-                    ).then(
-                        ({data}) => {
-                            console.log(data)
-                        }
-                    );
-                }
-
-
+                saveContent(document, encodeContent);
             }
         }, 1000);
         return () => clearTimeout(timer)
-    }, [content, lastText, document]);
+    }, [content, lastText, document, saveContent]);
 
     if(document === null) return null;
     return <Editor
@@ -49,15 +29,4 @@ const EditorContainer: FunctionComponent<EditorContainerProps> = ({document, con
     />
 }
 
-const mapStateToProps = (state: { document: IDocument; content:string }) => ({
-    document: state.document,
-    content: state.content
-});
-
-const mapDispatchToProps = ({
-    changeContent: (content: string) => ({type: 'CHANGE_CONTENT', content}),
-});
-
-export default connect(
-    mapStateToProps, mapDispatchToProps
-)(EditorContainer);
+export default EditorContainer;

@@ -5,12 +5,7 @@ const initialState:IDocument[] = [];
 export default function(state = initialState, action:any) {
     switch (action.type) {
         case 'ADD_DOCUMENT':
-            state.unshift({
-                id: action.id,
-                title: action.title,
-                updated_at: action.updated_at,
-                content: action.content,
-            });
+            state.unshift({...action.document});
             return state;
         case 'DELETE_DOCUMENT':
             return state.filter(doc => doc.id !== action.id)
