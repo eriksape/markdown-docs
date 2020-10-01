@@ -12,13 +12,12 @@ interface DocumentProps {
     onClick?: (e:SyntheticEvent) => void
     setTitle: (title:string, key:number) => void
     deleteDocument: (id: number) => void
-    reSelectDocument:() => void
 }
 
 const Document: FunctionComponent<DocumentProps> = ({
                                                         k, id, title, updated_at,
                                                         selected, onClick, setTitle,
-                                                        deleteDocument, reSelectDocument
+                                                        deleteDocument
 }) => {
     const [changeTitle, setChangeTitle] = useState(false);
     const [newTitle, setNewTitle] = useState(title);
@@ -56,23 +55,7 @@ const Document: FunctionComponent<DocumentProps> = ({
         }
     }
 
-    const onDelete = () => {
-        fetch(`${process.env.REACT_APP_BACKEND_URL}/api`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-            },
-            body: JSON.stringify({query: `{deleteDocument(id:"${id}")}`})
-        }).then(
-            response => response.json()
-        ).then(
-            ({data}) => {
-                deleteDocument(id);
-                reSelectDocument();
-            }
-        );
-    }
+    const onDelete = () => deleteDocument(id)
 
     return (<div className={`Document ${selected ? 'selected':''}`} onClick={onClick}>
         <div className='row'>

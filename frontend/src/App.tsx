@@ -4,7 +4,7 @@ import store from "./store";
 import './App.css';
 import Pane from "./components/Pane";
 import AppName from "./components/AppName";
-import Documents from "./components/Documents";
+import Documents from "./containers/Documents";
 import EditorContainer from "./components/EditorContainer";
 import Preview from "./components/Preview";
 

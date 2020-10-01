@@ -1,41 +1,26 @@
 import React, { FunctionComponent, useEffect } from 'react';
-import { connect } from "react-redux";
 import Document from './Document'
 import './Documents.css';
 import IDocument from "../interfaces/IDocument";
 
 interface DocumentsProps {
-    content: string
     document: IDocument
     documents: IDocument[]
-    loadDocuments:(documents:IDocument[]) => void
+    loadDocuments: Function
+    deleteDocument: (id:number) => void
+    updateContent:(id: number, content: string) => void
     selectDocument:(document:IDocument) => void
     setTitle: (title:string, key:number) => void
-    deleteDocument: (id: number) => void
-    updateContent:(id: number, content: string) => void
-    unselectDocument:() => void
+
 }
 
 const Documents: FunctionComponent<DocumentsProps> = ({
-                                                          content, document, documents,
-                                                          loadDocuments, selectDocument, setTitle,
-                                                          deleteDocument, updateContent, unselectDocument}) => {
+                                                          documents,document,
+                                                          loadDocuments, deleteDocument, updateContent,
+                                                          selectDocument, setTitle}) => {
     useEffect(() => {
-        fetch(`${process.env.REACT_APP_BACKEND_URL}/api`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-            },
-            body: JSON.stringify({query:`{readDocuments{id title content updated_at}}`})
-        }).then(
-            response => response.json()
-        ).then(
-            ({data}) => {
-                loadDocuments(data.readDocuments)
-                if(data.readDocuments.length > 0) selectDocument(data.readDocuments[0])
-            });
-    }, [loadDocuments, selectDocument]);
+        loadDocuments()
+    }, [loadDocuments]);
 
 
     return (
@@ -49,36 +34,15 @@ const Documents: FunctionComponent<DocumentsProps> = ({
                     selected={document && document.id === doc.id}
                     title={doc.title}
                     onClick={ () => {
-                        updateContent(document.id, content)
+                        updateContent(doc.id, doc.content)
                         selectDocument(doc)
                     } }
                     setTitle={setTitle}
-                    deleteDocument={deleteDocument}
-                    reSelectDocument={()=>{
-                        if(documents.length > 1) selectDocument(documents[0]);
-                        else unselectDocument();
-                    }}
+                    deleteDocument={ deleteDocument }
                 />)
             }
         </div>
-  )
+    )
 };
 
-const mapStateToProps = (state: { documents: IDocument[]; document: IDocument; content: string}) => ({
-    documents: state.documents,
-    document: state.document,
-    content: state.content
-});
-
-const mapDispatchToProps = ({
-    loadDocuments: (documents: IDocument[]) => ({type: 'LOAD_DOCUMENTS', documents}),
-    selectDocument: (document: IDocument) => ({type: 'SELECT_DOCUMENT', document}),
-    setTitle: (title: string, key:number) => ({type: 'SET_TITLE', title, key}),
-    deleteDocument: (id: number) => ({type: 'DELETE_DOCUMENT', id}),
-    updateContent: (id: number, content: string) => ({type: 'UPDATE_CONTENT', id, content}),
-    unselectDocument: () => ({type: 'UNSELECT_DOCUMENT'})
-});
-
-export default connect(
-    mapStateToProps, mapDispatchToProps
-)(Documents);
+export default Documents
