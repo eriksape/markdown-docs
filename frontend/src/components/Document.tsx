@@ -10,7 +10,7 @@ interface DocumentProps {
     updated_at: Date
     selected?: boolean
     onClick?: (e:SyntheticEvent) => void
-    setTitle: (title:string, key:number) => void
+    setTitle: (title:string, key:number, id:number) => void
     deleteDocument: (id: number) => void
 }
 
@@ -35,23 +35,8 @@ const Document: FunctionComponent<DocumentProps> = ({
 
     const onKeyDown = (event: KeyboardEvent) => {
         if(event.key === 'Enter') {
-            setTitle(newTitle, k)
+            setTitle(newTitle, k, id)
             setChangeTitle(false);
-
-            fetch(`${process.env.REACT_APP_BACKEND_URL}/api`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                },
-                body: JSON.stringify({query: `{updateDocument(id:${id} title:"${newTitle}"){id title content updated_at}}`})
-            }).then(
-                response => response.json()
-            ).then(
-                ({data}) => {
-                    console.log(data)
-                }
-            );
         }
     }
 

@@ -10,7 +10,7 @@ interface DocumentsProps {
     deleteDocument: (id:number) => void
     updateContent:(id: number, content: string) => void
     selectDocument:(document:IDocument) => void
-    setTitle: (title:string, key:number) => void
+    setTitle: (title:string, key:number, id:number) => void
 
 }
 

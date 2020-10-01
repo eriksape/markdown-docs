@@ -3,7 +3,18 @@ import IDocument from "../interfaces/IDocument";
 const unselectDocument = () => ({type: 'UNSELECT_DOCUMENT'});
 export const selectDocument = (document: IDocument) => ({type: 'SELECT_DOCUMENT', document});
 export const updateContent = (id: number, content: string) => ({type: 'UPDATE_CONTENT', id, content});
-export const setTitle = (title: string, key:number) => ({type: 'SET_TITLE', title, key});
+
+export const setTitle = (title: string, key:number, id:number) => async (dispatch:Function) => {
+    await fetch(`${process.env.REACT_APP_BACKEND_URL}/api`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+        },
+        body: JSON.stringify({query: `{updateDocument(id:${id} title:"${title}"){id title content updated_at}}`})
+    })
+    dispatch({type: 'SET_TITLE', title, key});
+}
 
 
 export const loadDocuments = () => async (dispatch:Function) => {
