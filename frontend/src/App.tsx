@@ -3,7 +3,7 @@ import { Provider } from "react-redux";
 import store from "./store";
 import './App.css';
 import Pane from "./components/Pane";
-import AppName from "./components/AppName";
+import AppName from "./containers/AppName";
 import Documents from "./containers/Documents";
 import EditorContainer from "./components/EditorContainer";
 import Preview from "./components/Preview";

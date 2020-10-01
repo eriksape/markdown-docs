@@ -37,7 +37,7 @@ export const loadDocuments = () => async (dispatch:Function) => {
 
 export const deleteDocument = (id:number) => async (dispatch:Function, getState:Function) => {
     try {
-        fetch(`${process.env.REACT_APP_BACKEND_URL}/api`, {
+        await fetch(`${process.env.REACT_APP_BACKEND_URL}/api`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -55,5 +55,18 @@ export const deleteDocument = (id:number) => async (dispatch:Function, getState:
     }
 }
 
-
+export const addDocument = (sequence:number) => async(dispatch:Function) => {
+    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+        },
+        body: JSON.stringify({query:`{createDocument(number:${sequence+1}){id title content updated_at}}`})
+    });
+    const json = await response.json();
+    const document:IDocument = json.data.createDocument;
+    dispatch({type: 'ADD_DOCUMENT', document});
+    dispatch({type: 'SELECT_DOCUMENT', document})
+}
 
