@@ -1,5 +1,4 @@
 import IDocument from "./IDocument";
-import * as states from "../constantans/states";
 
 export interface IActionDocuments {
     type: string

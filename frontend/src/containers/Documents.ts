@@ -7,12 +7,9 @@ import {
     selectDocument,
     setTitle,
 }  from '../actions/documents';
-import IDocument from "../interfaces/IDocument";
+import {IStateDocuments} from "../interfaces/IReducerDocuments";
 
-const mapStateToProps = (state: { documents: IDocument[], document: IDocument }) => ({
-    documents: state.documents,
-    document: state.document,
-});
+const mapStateToProps = ({documents}:{documents:IStateDocuments}) => ({documents});
 
 const mapDispatchToProps = ({
     loadDocuments,

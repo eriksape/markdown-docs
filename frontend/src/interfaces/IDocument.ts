@@ -1,6 +1,7 @@
 export default interface IDocument {
-    id: number;
-    title: string,
-    updated_at: Date,
-    content: string,
+    key?: number
+    id: number
+    title: string
+    updated_at: Date
+    content: string
 }

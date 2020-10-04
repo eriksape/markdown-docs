@@ -2,10 +2,10 @@ import React, { FunctionComponent, useEffect } from 'react';
 import Document from './Document'
 import './Documents.css';
 import IDocument from "../interfaces/IDocument";
+import {IStateDocuments} from "../interfaces/IReducerDocuments";
 
 interface DocumentsProps {
-    document: IDocument
-    documents: IDocument[]
+    documents: IStateDocuments
     loadDocuments: Function
     deleteDocument: (id:number) => void
     updateContent:(id: number, content: string) => void
@@ -15,7 +15,7 @@ interface DocumentsProps {
 }
 
 const Documents: FunctionComponent<DocumentsProps> = ({
-                                                          documents,document,
+                                                          documents,
                                                           loadDocuments, deleteDocument, updateContent,
                                                           selectDocument, setTitle}) => {
     useEffect(() => {
@@ -26,12 +26,12 @@ const Documents: FunctionComponent<DocumentsProps> = ({
     return (
         <div className="Documents">
             {
-                documents.map((doc, key) => <Document
+                documents.data.map((doc, key) => <Document
                     key={doc.id}
                     id={doc.id}
                     k={key}
                     updated_at={doc.updated_at}
-                    selected={document && document.id === doc.id}
+                    selected={documents.selected !== null && documents.selected.id === doc.id}
                     title={doc.title}
                     onClick={ () => {
                         updateContent(doc.id, doc.content)

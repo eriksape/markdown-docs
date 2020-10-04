@@ -3,7 +3,7 @@ import Editor from './Editor'
 import IDocument from "../interfaces/IDocument";
 
 interface EditorContainerProps {
-    document: IDocument
+    document: null|IDocument
     content: string
     changeContent:(content:string) => void
     saveContent:(document: IDocument, content:string) => void

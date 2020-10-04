@@ -1,25 +1,76 @@
-import IDocument from "../interfaces/IDocument";
+import {
+    GET_DOCUMENTS_REQUEST,
+    GET_DOCUMENTS_FAILURE,
+    GET_DOCUMENTS_SUCCESS,
+    SET_SELECTED_DOCUMENT,
+    CREATE_DOCUMENT_REQUEST,
+    CREATE_DOCUMENT_FAILURE,
+    CREATE_DOCUMENT_SUCCESS,
+    UPDATE_DOCUMENT_REQUEST,
+    UPDATE_DOCUMENT_FAILURE,
+    UPDATE_DOCUMENT_SUCCESS,
+} from '../constants/documents.types'
+import * as states from '../constants/states.types';
+import { IActionDocuments, IStateDocuments } from "../interfaces/IReducerDocuments";
 
-const initialState:IDocument[] = [];
+const initialState:IStateDocuments = {
+    status: states.IDLE_STATUS,
+    data: [],
+    selected: null,
+    error: null
+};
 
-export default function(state = initialState, action:any) {
+export default function(state = initialState, action:IActionDocuments) {
     switch (action.type) {
-        case 'ADD_DOCUMENT':
-            state.unshift({...action.document});
-            return state;
-        case 'DELETE_DOCUMENT':
-            return state.filter(doc => doc.id !== action.id)
-        case 'SET_TITLE':
-            state[action.key].title = action.title;
-            return state;
-        case 'UPDATE_CONTENT':
-            return [...state.map(doc => {
-                if(doc.id === action.id && doc.content !== action.content) doc.content = action.content.replace(/\n\n\n/mg, '\n\n');
-                return doc;
-            })];
-        case 'LOAD_DOCUMENTS':
-            return action.documents;
+        case SET_SELECTED_DOCUMENT:
+            return {
+                ...state,
+                selected: action.selected,
+            }
+        case GET_DOCUMENTS_REQUEST:
+        case CREATE_DOCUMENT_REQUEST:
+        case UPDATE_DOCUMENT_REQUEST:
+            return {
+                ...state,
+                status: states.LOADING_STATUS,
+                error: null,
+            }
+        case GET_DOCUMENTS_FAILURE:
+        case CREATE_DOCUMENT_FAILURE:
+        case UPDATE_DOCUMENT_FAILURE:
+            return {
+                ...state,
+                status: states.FAILURE_STATUS,
+                error: action.error,
+            }
+        case GET_DOCUMENTS_SUCCESS:
+            return {
+                ...state,
+                status: states.SUCCESS_STATUS,
+                selected: action.selected,
+                data: action.documents,
+            }
+        case CREATE_DOCUMENT_SUCCESS:
+            const create_data = state.data
+            if(action.selected) create_data.unshift(action.selected)
+            return {
+                ...state,
+                status: states.SUCCESS_STATUS,
+                selected: action.selected,
+                data: create_data,
+            }
+        case UPDATE_DOCUMENT_SUCCESS:
+            const update_data = state.data;
+            if(action.selected && state.selected && state.selected.key !== undefined) {
+                update_data[state.selected.key].content = action.selected.content
+            }
+            return {
+                ...state,
+                status: states.SUCCESS_STATUS,
+                data: update_data,
+            }
         default:
             return state;
     }
 }
+

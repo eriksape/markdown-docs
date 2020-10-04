@@ -3,10 +3,10 @@ import AppName from '../components/AppName';
 import {
     addDocument
 }  from '../actions/documents';
-import IDocument from "../interfaces/IDocument";
+import {IStateDocuments} from "../interfaces/IReducerDocuments";
 
-const mapStateToProps = (state: { documents: IDocument[]; }) => ({
-    number: state.documents.length,
+const mapStateToProps = ({documents}:{documents:IStateDocuments}) => ({
+    number: documents.data.length,
 });
 
 const mapDispatchToProps = ({
