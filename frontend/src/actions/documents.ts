@@ -4,6 +4,7 @@ import {
     GET_DOCUMENTS_FAILURE,
     GET_DOCUMENTS_SUCCESS,
     SET_SELECTED_DOCUMENT,
+    SET_DOCUMENT_CONTENT,
     CREATE_DOCUMENT_REQUEST,
     CREATE_DOCUMENT_FAILURE,
     CREATE_DOCUMENT_SUCCESS,
@@ -73,7 +74,7 @@ export const deleteDocument = (document:IDocument) => async (dispatch:Function, 
     }
 }
 
-export const changeContent = (content:string) => ({type: 'CHANGE_CONTENT', content});
+export const changeContent = (content:string) => ({type: SET_DOCUMENT_CONTENT, content});
 
 export const addDocument = (sequence:number) => async(dispatch:Function) => {
     dispatch(createDocumentRequest());
