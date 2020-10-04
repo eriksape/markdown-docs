@@ -5,11 +5,11 @@ export default function(state = initialState, action:any) {
         case 'SET_SELECTED_DOCUMENT':
         case 'GET_DOCUMENTS_SUCCESS':
         case 'CREATE_DOCUMENT_SUCCESS':
-            return action.selected.content
+        case 'DELETE_DOCUMENT_SUCCESS':
+            if(action.selected) return action.selected.content;
+            return '';
         case 'CHANGE_CONTENT':
-            return action.content
-        case 'UNSELECT_DOCUMENT':
-            return initialState
+            return action.content;
         default:
             return state;
     }

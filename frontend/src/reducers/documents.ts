@@ -9,6 +9,9 @@ import {
     UPDATE_DOCUMENT_REQUEST,
     UPDATE_DOCUMENT_FAILURE,
     UPDATE_DOCUMENT_SUCCESS,
+    DELETE_DOCUMENT_REQUEST,
+    DELETE_DOCUMENT_FAILURE,
+    DELETE_DOCUMENT_SUCCESS,
 } from '../constants/documents.types'
 import * as states from '../constants/states.types';
 import { IActionDocuments, IStateDocuments } from "../interfaces/IReducerDocuments";
@@ -30,6 +33,7 @@ export default function(state = initialState, action:IActionDocuments) {
         case GET_DOCUMENTS_REQUEST:
         case CREATE_DOCUMENT_REQUEST:
         case UPDATE_DOCUMENT_REQUEST:
+        case DELETE_DOCUMENT_REQUEST:
             return {
                 ...state,
                 status: states.LOADING_STATUS,
@@ -38,12 +42,14 @@ export default function(state = initialState, action:IActionDocuments) {
         case GET_DOCUMENTS_FAILURE:
         case CREATE_DOCUMENT_FAILURE:
         case UPDATE_DOCUMENT_FAILURE:
+        case DELETE_DOCUMENT_FAILURE:
             return {
                 ...state,
                 status: states.FAILURE_STATUS,
                 error: action.error,
             }
         case GET_DOCUMENTS_SUCCESS:
+        case DELETE_DOCUMENT_SUCCESS:
             return {
                 ...state,
                 status: states.SUCCESS_STATUS,

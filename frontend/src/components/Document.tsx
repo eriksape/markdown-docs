@@ -1,26 +1,24 @@
 import React, {FunctionComponent, useState, useEffect, SyntheticEvent, ChangeEvent, KeyboardEvent} from 'react'
 import formatDistanceToNow from 'date-fns/formatDistanceToNow'
-import document from '../assets/document.svg'
+import documentSVG from '../assets/document.svg'
 import './Document.css';
+import IDocument from "../interfaces/IDocument";
 
 interface DocumentProps {
+    document: IDocument
     k: number
-    id: number
-    title: string
-    updated_at: Date
     selected?: boolean
     onClick?: (e:SyntheticEvent) => void
     setTitle: (title:string, key:number, id:number) => void
-    deleteDocument: (id: number) => void
+    deleteDocument: (id: IDocument) => void
 }
 
 const Document: FunctionComponent<DocumentProps> = ({
-                                                        k, id, title, updated_at,
-                                                        selected, onClick, setTitle,
-                                                        deleteDocument
+                                                        document, k, selected, onClick,
+                                                        setTitle, deleteDocument
 }) => {
     const [changeTitle, setChangeTitle] = useState(false);
-    const [newTitle, setNewTitle] = useState(title);
+    const [newTitle, setNewTitle] = useState(document.title);
 
     useEffect(()=>{
         if(!selected) {
@@ -35,28 +33,28 @@ const Document: FunctionComponent<DocumentProps> = ({
 
     const onKeyDown = (event: KeyboardEvent) => {
         if(event.key === 'Enter') {
-            setTitle(newTitle, k, id)
+            setTitle(newTitle, k, document.id)
             setChangeTitle(false);
         }
     }
 
-    const onDelete = () => deleteDocument(id)
+    const onDelete = () => deleteDocument(document)
 
     return (<div className={`Document ${selected ? 'selected':''}`} onClick={onClick}>
         <div className='row'>
             <div className='column'>
                 <div className='image'>
-                    <img src={document} alt="document icon"/>
+                    <img src={documentSVG} alt="document icon"/>
                 </div>
             </div>
             <div className='column'>
                 <div className='content'>
                     {
                         changeTitle && selected ?
-                            <input onKeyDown={onKeyDown} onChange={onChangeTitle} defaultValue={title} />:
-                            <div className='title' onDoubleClick={()=>setChangeTitle(true)}>{title}</div>
+                            <input onKeyDown={onKeyDown} onChange={onChangeTitle} defaultValue={document.title} />:
+                            <div className='title' onDoubleClick={()=>setChangeTitle(true)}>{document.title}</div>
                     }
-                    <div className='date'>{formatDistanceToNow(updated_at)}</div>
+                    <div className='date'>{formatDistanceToNow(document.updated_at)}</div>
                 </div>
             </div>
             <div className='column'>

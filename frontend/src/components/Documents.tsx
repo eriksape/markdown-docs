@@ -7,7 +7,7 @@ import {IStateDocuments} from "../interfaces/IReducerDocuments";
 interface DocumentsProps {
     documents: IStateDocuments
     loadDocuments: Function
-    deleteDocument: (id:number) => void
+    deleteDocument: (document:IDocument) => void
     updateContent:(id: number, content: string) => void
     selectDocument:(document:IDocument) => void
     setTitle: (title:string, key:number, id:number) => void
@@ -28,14 +28,12 @@ const Documents: FunctionComponent<DocumentsProps> = ({
             {
                 documents.data.map((doc, key) => <Document
                     key={doc.id}
-                    id={doc.id}
                     k={key}
-                    updated_at={doc.updated_at}
                     selected={documents.selected !== null && documents.selected.id === doc.id}
-                    title={doc.title}
+                    document={doc}
                     onClick={ () => {
                         updateContent(doc.id, doc.content)
-                        selectDocument(doc)
+                        selectDocument({...doc, key})
                     } }
                     setTitle={setTitle}
                     deleteDocument={ deleteDocument }
