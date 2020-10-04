@@ -40,7 +40,6 @@ const deleteDocumentSuccess = (documents:IDocument[], selected:null|IDocument) =
 const deleteDocumentFailure = (error:string) => ({type: DELETE_DOCUMENT_FAILURE, error});
 
 export const selectDocument = (selected: IDocument) => ({type: SET_SELECTED_DOCUMENT, selected});
-export const updateContent = (id: number, content: string) => ({type: 'UPDATE_CONTENT', id, content});
 
 export const setTitle = (title: string, key:number, id:number) => async (dispatch:Function) => {
     await fetch(`${process.env.REACT_APP_BACKEND_URL}/api`, {

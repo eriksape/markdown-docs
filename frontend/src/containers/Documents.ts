@@ -3,7 +3,6 @@ import Documents from '../components/Documents';
 import {
     loadDocuments,
     deleteDocument,
-    updateContent,
     selectDocument,
     setTitle,
 }  from '../actions/documents';
@@ -14,7 +13,6 @@ const mapStateToProps = ({documents}:{documents:IStateDocuments}) => ({documents
 const mapDispatchToProps = ({
     loadDocuments,
     deleteDocument,
-    updateContent,
     selectDocument,
     setTitle,
 });

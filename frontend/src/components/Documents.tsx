@@ -8,7 +8,6 @@ interface DocumentsProps {
     documents: IStateDocuments
     loadDocuments: Function
     deleteDocument: (document:IDocument) => void
-    updateContent:(id: number, content: string) => void
     selectDocument:(document:IDocument) => void
     setTitle: (title:string, key:number, id:number) => void
 
@@ -16,7 +15,7 @@ interface DocumentsProps {
 
 const Documents: FunctionComponent<DocumentsProps> = ({
                                                           documents,
-                                                          loadDocuments, deleteDocument, updateContent,
+                                                          loadDocuments, deleteDocument,
                                                           selectDocument, setTitle}) => {
     useEffect(() => {
         loadDocuments()
@@ -32,7 +31,6 @@ const Documents: FunctionComponent<DocumentsProps> = ({
                     selected={documents.selected !== null && documents.selected.id === doc.id}
                     document={doc}
                     onClick={ () => {
-                        updateContent(doc.id, doc.content)
                         selectDocument({...doc, key})
                     } }
                     setTitle={setTitle}
