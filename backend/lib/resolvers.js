@@ -1,6 +1,6 @@
 const { GraphQLScalarType } = require('graphql');
 const { Kind } = require('graphql/language');
-const PGConnection = require('./postgres')
+const models = require('./../models');
 
 module.exports = {
     Date: new GraphQLScalarType({
@@ -38,52 +38,31 @@ module.exports = {
     }),
     Query: {
         createDocument: async(obj, {number}) => {
-            const database = new PGConnection();
-            const client = await database.client.connect();
-            const query = 'INSERT INTO documents(title, content) VALUES ($1, $2) RETURNING id, title, content, updated_at';
-            const values = [`new document ${number}`, `# new document ${number}`];
-            const document = await client.query(query, values);
-            await client.end();
-
-            return document.rows[0];
+            const document = models.documents.build({
+                title: `new document ${number}`,
+                content: `# new document ${number}`
+            });
+            await document.save();
+            return document;
         },
 
         readDocuments: async () => {
-            const database = new PGConnection();
-            const client = await database.client.connect();
-            const documents = await client.query('SELECT id, title, content, updated_at FROM documents');
-            await client.end();
-
-            return documents.rows;
+            return await models.documents.findAll({
+                order:[['createdAt', 'ASC']]
+            });
         },
 
         readDocument: async (obj, {id}) => {
-            const database = new PGConnection();
-            const client = await database.client.connect();
-            const documents = await client.query('SELECT id, title, content, updated_at FROM documents where id=$1', [id]);
-            await client.end();
-            return documents.rows[0];
+            return await models.documents.findByPk(id);
         },
 
         updateDocument: async (obj, {id, title, content}) => {
-            const database = new PGConnection();
-            const client = await database.client.connect();
-            const row = (await client.query('SELECT id, title, content FROM documents where id=$1', [id])).rows[0]
-            const query = 'UPDATE documents SET title=$1, content=$2, updated_at=now() where id=$3 RETURNING id, title, content, updated_at';
-            const values = [title||row.title, (content ? decodeURI(content):row.content), id];
-            const document = await client.query(query, values)
-            await client.end();
-
-            return document.rows[0];
+            await models.documents.update({title, content}, {where: {id}})
+            return await models.documents.findByPk(id);
         },
 
         deleteDocument: async(obj, {id}) => {
-            const database = new PGConnection();
-            const client = await database.client.connect();
-            const query = 'DELETE FROM documents where id=$1';
-            const document = await client.query(query, [id])
-            await client.end();
-
+            await models.documents.destroy({where: {id}});
             return null
         }
     },
