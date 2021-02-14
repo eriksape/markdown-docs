@@ -9,7 +9,6 @@ on: [push, pull_request]
 jobs:
   test_suite:
     runs-on: ubuntu-latest
-    if: github.event == 'pull_request' && github.head_ref == 'refs/heads/develop'
     steps:
       - uses: actions/checkout@v2
       - name: Initialize docker
