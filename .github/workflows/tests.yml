@@ -3,7 +3,6 @@ name: test
 on:
   push:
     branches:
-      - main
       - develop
       - feature/**
   pull_request:
@@ -13,6 +12,7 @@ jobs:
   test_suite:
 
     runs-on: ubuntu-latest
+    if: github.ref != 'refs/heads/develop'
 
     steps:
       - uses: actions/checkout@v2
