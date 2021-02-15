@@ -1,8 +1,8 @@
 version: "3.8"
-services: 
+services:
     frontend:
         image: node:14.9-alpine
-        volumes: 
+        volumes:
             - ./frontend:/var/www/frontend
         working_dir: /var/www/frontend
         command: /bin/sh -c "yarn install && yarn start"
@@ -32,15 +32,10 @@ services:
         stdin_open: true
         tty: true
         ports:
-            - 3001:3000
+            - 3001:3001
         environment:
             - NODE_ENV=development
-            - PORT=3000
-            - DB_HOST=database
-            - DB_PORT=5432
-            - DB_DATABASE=mddocs-database
-            - DB_USERNAME=mddocs-user
-            - DB_PASSWORD=mddocs-password
+            - PORT=3001
             - DATABASE_URL=postgres://mddocs-user:mddocs-password@database:5432/mddocs-database
         depends_on:
             - database
