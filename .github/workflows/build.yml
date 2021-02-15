@@ -1,9 +1,9 @@
-name: test
+name: CI/CD proccess
 
 on: [push, pull_request]
 
 jobs:
-  test_suite:
+  test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -11,3 +11,4 @@ jobs:
         run: docker-compose up -d database backend && sleep 5 && docker-compose run backend /bin/sh -c "npm install && npm run migrate up"
       - name: Run GraphQL tests
         run: docker-compose up -d backend database && sleep 20 && docker-compose run backend npm run test
+
