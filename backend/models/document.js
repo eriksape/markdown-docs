@@ -16,8 +16,11 @@ module.exports = (sequelize) => {
   Document.init({
     title: DataTypes.STRING,
     content: DataTypes.TEXT,
+    created_at: DataTypes.DATE,
+    updated_at: DataTypes.DATE,
   }, {
     sequelize,
+    underscored: true,
     modelName: 'documents',
   });
   return Document;
