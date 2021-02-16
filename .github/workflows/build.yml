@@ -23,14 +23,17 @@ jobs:
       - name: Setup Cloud SDK
         uses: google-github-actions/setup-gcloud@master
         with:
-          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          service_account_email: ${{ secrets.GCP_EMAIL }}
           service_account_key: ${{ secrets.GCP_CREDENTIALS }}
+          export_default_credentials: true
 
       - name: Authorize Docker push
         run: gcloud auth configure-docker
 
       - name: Build and Push Container
-        run: gcloud builds submit --tag ${{ secrets.GCP_CR_HOST }}/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_FRONTEND_NAME }}:${{  github.sha }}
+        run: |-
+          echo "$GCLOUD_AUTH_FILE" | base64 -d > gcloud-service-key.json
+          gcloud builds submit --tag ${{ secrets.GCP_CR_HOST }}/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_FRONTEND_NAME }}:${{  github.sha }}
 
       - name: Deploy to Cloud Run
         run: |-
