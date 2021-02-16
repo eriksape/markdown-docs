@@ -43,3 +43,6 @@ With the idea of the app the data to store should be:
 | content    | text      |
 | created_at | timestamp |
 | updated_at | timestamp |
+
+## Deploy
+Test and deploys with GitHub Actions <3
