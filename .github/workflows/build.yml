@@ -1,8 +1,9 @@
 name: CI/CD proccess
 
 on:
-  push:
-    branches: [ feature/deploy ]
+  pull_request:
+    branches: [ develop ]
+    types: [closed]
 
 
 jobs:

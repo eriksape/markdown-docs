@@ -1,0 +1,15 @@
+name: CI/CD proccess
+
+on:
+  push:
+    branches-ignore: [ develop, main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Initialize docker
+        run: docker-compose up -d database backend && sleep 5 && docker-compose run backend /bin/sh -c "npm install && npm run migrate"
+      - name: Run GraphQL tests
+        run: docker-compose up -d backend database && sleep 20 && docker-compose run backend npm run test
