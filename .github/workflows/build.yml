@@ -30,6 +30,9 @@ jobs:
       - name: Authorize Docker push
         run: gcloud auth configure-docker
 
+      - name: Login to GCloud
+        run:  gcloud config set project ${{ secrets.GCP_PROJECT_ID }}
+
       - name: Build and Push Container
         run: |-
           echo "$GCLOUD_AUTH_FILE" | base64 -d > gcloud-service-key.json
