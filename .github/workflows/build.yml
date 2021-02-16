@@ -23,6 +23,7 @@ jobs:
       - name: Login
         uses: google-github-actions/setup-gcloud@master
         with:
+          GCP_CR_HOST: ${{ secrets.GCP_CR_HOST }}
           GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
           GCP_APP_REGION: ${{ secrets.GCP_APP_REGION }}
           GCP_BACKEND_NAME: ${{ secrets.GCP_BACKEND_NAME }}
@@ -34,7 +35,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
       - name: Build Docker image
-        run: gcloud builds submit --tag $GCP_FRONTEND_NAME
+        run: gcloud builds submit --tag $FRONTEND_IMAGE
       - name: Deploy Docker image
         run: gcloud run deploy {{ $secrets.GCP_FRONTEND_NAME }} --image $FRONTEND_IMAGE --region ${{ secrets.GCP_APP_REGION }} --platform managed
 
