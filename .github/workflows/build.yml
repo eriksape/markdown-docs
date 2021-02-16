@@ -16,29 +16,29 @@ jobs:
         run: docker-compose up -d backend database && sleep 20 && docker-compose run backend npm run test
   deploy:
     runs-on: ubuntu-latest
-    env:
-      BACKEND_IMAGE: ${{ secrets.GCP_CR_HOST }}/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_BACKEND_NAME }}
-      FRONTEND_IMAGE: ${{ secrets.GCP_CR_HOST }}/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_FRONTEND_NAME }}
     steps:
-      - name: Login
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Cloud SDK
         uses: google-github-actions/setup-gcloud@master
         with:
-          GCP_CR_HOST: ${{ secrets.GCP_CR_HOST }}
-          GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
-          GCP_APP_REGION: ${{ secrets.GCP_APP_REGION }}
-          GCP_BACKEND_NAME: ${{ secrets.GCP_BACKEND_NAME }}
-          GCP_FRONTEND_NAME: ${{ secrets.GCP_FRONTEND_NAME }}
-          service_account_email: ${{ secrets.GCP_EMAIL }}
+          project_id: ${{ env.PROJECT_ID }}
           service_account_key: ${{ secrets.GCP_CREDENTIALS }}
-      - name: Configure Docker
-        run: |
-          gcloud config set project ${{ secrets.GCP_PROJECT_ID }}
-          gcloud auth configure-docker --quiet
-      - name: Checkout repository
-        uses: actions/checkout@v2
-      - name: Build Docker image
-        run: gcloud builds submit --tag $FRONTEND_IMAGE
-      - name: Deploy Docker image
-        run: gcloud run deploy {{ $secrets.GCP_FRONTEND_NAME }} --image $FRONTEND_IMAGE --region ${{ secrets.GCP_APP_REGION }} --platform managed
 
+      - name: Authorize Docker push
+        run: gcloud auth configure-docker
+
+      - name: Build and Push Container
+        run: |-
+          docker build -t ${{ secrets.GCP_CR_HOST }}/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_FRONTEND_NAME }}:${{  github.sha }} .
+          docker push ${{ secrets.GCP_CR_HOST }}/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_FRONTEND_NAME }}:${{  github.sha }}
+
+      - name: Deploy to Cloud Run
+        run: |-
+          gcloud run deploy ${{ secrets.GCP_FRONTEND_NAME }} \
+            --region ${{ secrets.GCP_APP_REGION }} \
+            --image ${{ secrets.GCP_CR_HOST }}/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_FRONTEND_NAME }}:${{  github.sha }} \
+            --platform "managed" \
+            --quiet
 
