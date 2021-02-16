@@ -35,7 +35,7 @@ jobs:
 
       - name: Build and Push Container
         run: |-
-          echo "$GCLOUD_AUTH_FILE" | base64 -d > gcloud-service-key.json
+          cd frontend | echo "$GCLOUD_AUTH_FILE" | base64 -d > gcloud-service-key.json
           gcloud builds submit --tag ${{ secrets.GCP_CR_HOST }}/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_FRONTEND_NAME }}:${{  github.sha }}
 
       - name: Deploy to Cloud Run
