@@ -14,14 +14,9 @@ jobs:
         run: docker-compose up -d database backend && sleep 5 && docker-compose run backend /bin/sh -c "npm install && npm run migrate"
       - name: Run GraphQL tests
         run: docker-compose up -d backend database && sleep 20 && docker-compose run backend npm run test
-  notifier-success:
-    runs-on: ubuntu-latest
-    needs: test
-    if: ${{ needs.test.result == 'success' }}
-    steps:
       - name: send custom message with args
         uses: appleboy/telegram-action@master
         with:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
-          args: 👨🏻‍💻 User ${{github.actor}} in ${{ github.repository }} repository. Make ${{ github.event_name }}. Job ${{github.job}}.
+          args: 👨🏻‍💻 Hello world.
