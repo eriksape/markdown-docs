@@ -23,4 +23,4 @@ jobs:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
           format: markdown
-          args: 👨🏻‍💻 User *bold \*${{ github.actor }}* in _italic \*${{ github.repository }}_ %0A ✅Test finished.
+          args: *bold _italic bold ~italic bold strikethrough~ __underline italic bold___ bold*
