@@ -14,7 +14,7 @@ jobs:
         run: docker-compose up -d database backend && sleep 5 && docker-compose run backend /bin/sh -c "npm install && npm run migrate"
       - name: Run GraphQL tests
         run: docker-compose up -d backend database && sleep 20 && docker-compose run backend npm run test
-  notifier-success:
+  notifier:
     runs-on: ubuntu-latest
     steps:
       - name: send custom message with args
@@ -24,6 +24,7 @@ jobs:
           token: ${{ secrets.TELEGRAM_TOKEN }}
           format: html
           message: >
+            👨🏻‍💻 User <b>${{ github.actor }}</b> in <u>${{ github.repository }}</u>  Make <em>${{ github.event_name }}</em>
             {{#success build.status}}
             ✅ Build #{{build.number}} of `{{repo.name}}` succeeded.
 
