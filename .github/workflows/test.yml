@@ -32,10 +32,9 @@ jobs:
             📝 ${{ github.event.head_commit.message }}
 
 
-            {{#success build.status}}
-            ✅ Build #${{github.run_id}} succeeded.
-            {{else}}
-            ❌ Build #{{build.number}} failed.
+            {{#success build.status}}✅ Build #${{github.run_id}} succeeded.
+            {{else}}❌ Build #{{build.number}} failed.
             {{/success}}
 
-            🌐 <a href="https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}">Github Action</a>
+
+            🌐 Check in <a href="https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}">Github Action</a>
