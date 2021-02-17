@@ -17,10 +17,6 @@ jobs:
   notifier:
     runs-on: ubuntu-latest
     steps:
-      - name: Extract branch name
-        shell: bash
-        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-        id: extract_branch
       - name: send custom message with args
         uses: appleboy/telegram-action@master
         with:
@@ -28,7 +24,7 @@ jobs:
           token: ${{ secrets.TELEGRAM_TOKEN }}
           format: html
           message: >
-            👨🏻‍💻 User <b>${{ github.actor }}</b> in <u>${{ github.repository }}</u>  Make <em>${{ github.event_name }}</em> on <u>${{ steps.extract_branch.outputs.branch }}</u>
+            👨🏻‍💻 User <b>${{ github.actor }}</b> in <u>${{ github.repository }}</u>  Make <em>${{ github.event_name }}</em> on <u>${{ github.ref }}</u>
             📝 ```
             ${{ github.event.head_commit.message }}
             ```
@@ -39,4 +35,4 @@ jobs:
               ❌ Build #{{build.number}} of `{{repo.name}}` failed.
             {{/success}}
 
-            🌐 ${{GITHUB_SERVER_URL}}/${{GITHUB_REPOSITORY}}/actions/runs/${{GITHUB_RUN_ID}}
+            🌐 <a href="https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}">Github Action</a>
