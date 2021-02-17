@@ -23,4 +23,4 @@ jobs:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
           format: markdown
-          args: *bold _italic bold ~italic bold strikethrough~ __underline italic bold___ bold*
+          args: '*bold _italic bold ~italic bold strikethrough~ __underline italic bold___ bold*'
