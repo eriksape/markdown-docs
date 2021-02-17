@@ -43,7 +43,8 @@ module.exports = {
                 content: `# new document ${number}`
             });
             await document.save();
-            return document;
+
+            return await models.documents.findByPk(document.id);
         },
 
         readDocuments: async () => {
