@@ -22,5 +22,5 @@ jobs:
         with:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
-          format: markdown
-          args: '_italic bold ~italic bold strikethrough~ __underline italic bold___'
+          format: html
+          args: '<pre><code class="language-python">pre-formatted fixed-width code block written in the Python programming language</code></pre>\nhello'
