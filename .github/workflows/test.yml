@@ -23,4 +23,5 @@ jobs:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
           format: html
-          args: '<pre><code class="language-python">pre-formatted fixed-width code block written in the Python programming language</code></pre>\nhello'
+          args: 'This is
+          a multiline text'
