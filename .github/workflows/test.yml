@@ -39,4 +39,4 @@ jobs:
               ❌ Build #{{build.number}} of `{{repo.name}}` failed.
             {{/success}}
 
-            🌐 ${{ $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID }}
+            🌐 ${{GITHUB_SERVER_URL}}/${{GITHUB_REPOSITORY}}/actions/runs/${{GITHUB_RUN_ID}}
