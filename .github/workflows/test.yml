@@ -16,7 +16,8 @@ jobs:
         run: docker-compose up -d backend database && sleep 20 && docker-compose run backend npm run test
   notifier-success:
     runs-on: ubuntu-latest
-    if: ${{ needs.test.result == success }}
+    needs: test
+    if: ${{ needs.test.result == 'success' }}
     steps:
       - name: send custom message with args
         uses: appleboy/telegram-action@master
