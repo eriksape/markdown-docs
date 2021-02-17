@@ -17,6 +17,10 @@ jobs:
   notifier:
     runs-on: ubuntu-latest
     steps:
+      - name: Extract branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch
       - name: send custom message with args
         uses: appleboy/telegram-action@master
         with:
@@ -24,7 +28,7 @@ jobs:
           token: ${{ secrets.TELEGRAM_TOKEN }}
           format: html
           message: >
-            👨🏻‍💻 User <b>${{ github.actor }}</b> in <u>${{ github.repository }}</u>  Make <em>${{ github.event_name }}</em> on <u>${{ GITHUB_REF }}</u>
+            👨🏻‍💻 User <b>${{ github.actor }}</b> in <u>${{ github.repository }}</u>  Make <em>${{ github.event_name }}</em> on <u>${{ steps.extract_branch.outputs.branch }}</u>
             📝 ```
             ${{ github.event.head_commit.message }}
             ```
