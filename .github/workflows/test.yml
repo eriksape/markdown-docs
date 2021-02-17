@@ -24,15 +24,18 @@ jobs:
           token: ${{ secrets.TELEGRAM_TOKEN }}
           format: html
           message: >
-            👨🏻‍💻 User <b>${{ github.actor }}</b> in <u>${{ github.repository }}</u>  Make <em>${{ github.event_name }}</em> on <u>${{ github.ref }}</u>
+            👨🏻‍💻 User <b>${{ github.actor }}</b> in <u>${{ github.repository }}</u>
+
+            Make <em>${{ github.event_name }}</em> on <u>${{ github.ref }}</u>
 
 
             📝 ${{ github.event.head_commit.message }}
 
+
             {{#success build.status}}
-              ✅ Build #{{build.number}} of `{{repo.name}}` succeeded.
+            ✅ Build #${{github.run_id}} succeeded.
             {{else}}
-              ❌ Build #{{build.number}} of `{{repo.name}}` failed.
+            ❌ Build #{{build.number}} failed.
             {{/success}}
 
             🌐 <a href="https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}">Github Action</a>
