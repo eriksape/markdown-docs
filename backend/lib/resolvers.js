@@ -47,13 +47,22 @@ module.exports = {
         },
 
         readDocuments: async () => {
-            return await models.documents.findAll({
-                order:[['createdAt', 'ASC']]
+            const documents = await models.documents.findAll({
+                order:[['created_at', 'ASC']]
             });
+
+            console.log(documents);
+
+            return documents.map(document => ({
+                ...document.dataValues,
+                content: decodeURIComponent(document.dataValues.content),
+            }))
         },
 
         readDocument: async (obj, {id}) => {
-            return await models.documents.findByPk(id);
+            const document = models.documents.findByPk(id);
+            document.content = decodeURIComponent(document.content);
+            return document
         },
 
         updateDocument: async (obj, {id, title, content}) => {
