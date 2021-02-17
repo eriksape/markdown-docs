@@ -22,4 +22,5 @@ jobs:
         with:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
-          args: 👨🏻‍💻 User ${{github.actor}} in ${{ github.repository }} repository. Make ${{ github.event_name }}. Job ${{github.job}}.
+          format: markdown
+          args: 👨🏻‍💻 User **${{github.actor}}** in __${{ github.repository }}__ repository. Make **${{ github.event_name }}**. \n ✅Test finished.
