@@ -54,4 +54,29 @@ jobs:
             --image ${{ secrets.GCP_CR_HOST }}/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_BACKEND_NAME }} \
             --platform "managed" \
             --quiet
-      - name:
+  notifier:
+    runs-on: ubuntu-latest
+    if: always()
+    needs: deploy
+    steps:
+      - name: send custom message with args
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          format: html
+          message: >
+            👨🏻‍💻 User <b>${{ github.actor }}</b> in <u>${{ github.repository }}</u>
+
+            Make <em>${{ github.event_name }}</em> on <u>${{ github.ref }}</u>
+
+
+            📝 ${{ github.event.head_commit.message }}
+
+
+            {{#success '${{needs.test.result}}'}}✅ Build #${{github.run_id}} succeeded.
+            {{else}}❌ Build #${{github.run_id}} failed.
+            {{/success}}
+
+
+            🌐 Check in <a href="https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}">Github Action</a>
