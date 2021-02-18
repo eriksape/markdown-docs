@@ -33,7 +33,7 @@ jobs:
             📝 ${{ github.event.head_commit.message }}
 
 
-            {{#if ${{needs.test.result}}==success}}✅ Build #${{github.run_id}} succeeded.
+            {{#if '${{needs.test.result}}'=='success'}}✅ Build #${{github.run_id}} succeeded.
             {{else}}❌ Build #{{build.number}} failed.
             {{/if}}
 
