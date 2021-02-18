@@ -16,6 +16,7 @@ jobs:
         run: docker-compose up -d backend database && sleep 20 && docker-compose run backend npm run test
   notifier:
     runs-on: ubuntu-latest
+    if: always()
     needs: test
     steps:
       - name: send custom message with args
