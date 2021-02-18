@@ -74,7 +74,7 @@ jobs:
             📝 ${{ github.event.head_commit.message }}
 
 
-            {{#success '${{needs.test.result}}'}}✅ Build #${{github.run_id}} succeeded.
+            {{#success '${{needs.deploy.result}}'}}✅ Build #${{github.run_id}} succeeded.
             {{else}}❌ Build #${{github.run_id}} failed.
             {{/success}}
 
