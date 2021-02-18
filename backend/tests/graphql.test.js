@@ -11,7 +11,7 @@ describe('GraphQL', () => {
             .expect(200)
             .end((err,res) => {
                 if (err) return done(err);
-                expect(res.body.data.createDocument).have.property('id')
+                expect(res.body.data.createDocument).have.property('idd')
                 expect(res.body.data.createDocument).have.property('content')
                 expect(res.body.data.createDocument).have.property('title')
                 expect(res.body.data.createDocument).have.property('updated_at')
