@@ -10,12 +10,13 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
       - name: Initialize docker
         run: docker-compose up -d database backend && sleep 5 && docker-compose run backend /bin/sh -c "npm install && npm run migrate"
       - name: Run GraphQL tests
         run: docker-compose up -d backend database && sleep 20 && docker-compose run backend npm run test
-  deploy-frontend:
+  deploy:
     needs: test
     runs-on: ubuntu-latest
     steps:
@@ -38,45 +39,18 @@ jobs:
       - name: Build and Push Container
         run: |-
           cd frontend && echo "$GCLOUD_AUTH_FILE" | base64 -d > gcloud-service-key.json
-          gcloud builds submit --tag ${{ secrets.GCP_CR_HOST }}/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_FRONTEND_NAME }}:${{  github.sha }}
+          gcloud builds submit --tag ${{ secrets.GCP_CR_HOST }}/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_FRONTEND_NAME }}:${{ github.sha }}
+          gcloud builds submit --tag ${{ secrets.GCP_CR_HOST }}/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_BACKEND_NAME }}:${{ github.sha }}
 
       - name: Deploy to Cloud Run
         run: |-
           gcloud run deploy ${{ secrets.GCP_FRONTEND_NAME }} \
             --region ${{ secrets.GCP_APP_REGION }} \
-            --image ${{ secrets.GCP_CR_HOST }}/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_FRONTEND_NAME }}:${{  github.sha }} \
+            --image ${{ secrets.GCP_CR_HOST }}/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_FRONTEND_NAME }}:${{ github.sha }} \
             --platform "managed" \
             --quiet
-  deploy-backend:
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Setup Cloud SDK
-        uses: google-github-actions/setup-gcloud@master
-        with:
-          service_account_email: ${{ secrets.GCP_EMAIL }}
-          service_account_key: ${{ secrets.GCP_CREDENTIALS }}
-          export_default_credentials: true
-
-      - name: Authorize Docker push
-        run: gcloud auth configure-docker
-
-      - name: Login to GCloud
-        run: gcloud config set project ${{ secrets.GCP_PROJECT_ID }}
-
-      - name: Build and Push Container
-        run: |-
-          cd backend && echo "$GCLOUD_AUTH_FILE" | base64 -d > gcloud-service-key.json
-          gcloud builds submit --tag ${{ secrets.GCP_CR_HOST }}/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_BACKEND_NAME }}:${{  github.sha }}
-
-      - name: Deploy to Cloud Run
-        run: |-
           gcloud run deploy ${{ secrets.GCP_BACKEND_NAME }} \
             --region ${{ secrets.GCP_APP_REGION }} \
-            --image ${{ secrets.GCP_CR_HOST }}/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_BACKEND_NAME }}:${{  github.sha }} \
+            --image ${{ secrets.GCP_CR_HOST }}/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_BACKEND_NAME }}:${{ github.sha }} \
             --platform "managed" \
             --quiet
-

@@ -52,8 +52,6 @@ module.exports = {
                 order:[['created_at', 'ASC']]
             });
 
-            console.log(documents);
-
             return documents.map(document => ({
                 ...document.dataValues,
                 content: decodeURIComponent(document.dataValues.content),
