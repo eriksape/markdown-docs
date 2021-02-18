@@ -35,7 +35,7 @@ jobs:
 
 
             {{#success '${{needs.test.result}}'}}✅ Build #${{github.run_id}} succeeded.
-            {{else}}❌ Build #{{build.number}} failed.
+            {{else}}❌ Build #{{github.run_id}} failed.
             {{/success}}
 
 
