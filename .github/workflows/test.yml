@@ -33,9 +33,9 @@ jobs:
             📝 ${{ github.event.head_commit.message }}
 
 
-            {{#success ${{needs.test.result}}}}✅ Build #${{github.run_id}} succeeded.
+            {{#if ${{needs.test.result}}==success}}✅ Build #${{github.run_id}} succeeded.
             {{else}}❌ Build #{{build.number}} failed.
-            {{/success}}
+            {{/if}}
 
 
             🌐 Check in <a href="https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}">Github Action</a>
