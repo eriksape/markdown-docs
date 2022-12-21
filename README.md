@@ -1,5 +1,5 @@
 # markdown-docs
-A markdown editor app
+A markdown editor app.
 
 ## Installation
 
